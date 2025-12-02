@@ -1,0 +1,19 @@
+<style>
+  html, body {
+    height: 100%;              /* pastikan tinggi penuh */
+    margin: 0;                 /* hilangkan margin default */
+    display: flex;
+    flex-direction: column;    /* susun elemen secara vertikal */
+  }
+
+  main {
+    flex: 1;                   /* isi konten mengambil ruang tersisa */
+  }
+
+  footer {
+    margin-top: auto;          /* dorong footer ke bawah */
+  }
+</style>
+<footer class="bg-dark text-white text-center py-3">
+  &copy; <?= date('Y') ?> Ilham Zainuri & M Hafiz - All rights reserved.
+</footer>
