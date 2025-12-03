@@ -19,7 +19,7 @@ include './db/koneksi.php'; // pastikan koneksi tersedia
 
 <body>
 
-    <header class="">
+    <header>
         <div class="header-main bg-primary text-white py-2">
             <div class="container d-flex justify-content-between align-items-center">
 
@@ -128,7 +128,7 @@ include './db/koneksi.php'; // pastikan koneksi tersedia
 
                     <!-- scroll to about section -->
                     <li class="menu-category">
-                        <a href="#about" class="menu-title">About</a>
+                        <a href="index.php#about" class="menu-title">About</a>
                     </li>
 
 

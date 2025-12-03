@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perpustakaan UNIGA</title>
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="./assets/images/logo/favicon.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
   <!--
     - favicon
   -->
@@ -72,6 +79,54 @@
 
   <?php include 'header.php'; ?>
 
+  <!-- Navigation khusus search -->
+  <nav>
+    <ul>
+      <li class="menu-category flex-grow-1">
+        <form action="index.php" method="GET" class="d-flex">
+          <!-- Input keyword -->
+          <input type="text" name="q" class="form-control form-control-sm me-2"
+            placeholder="Cari judul, penulis, penerbit...">
+
+          <!-- Tombol Filter -->
+          <div class="dropdown me-2">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Filter
+            </button>
+            <div class="dropdown-menu p-3" style="min-width: 250px;">
+              <!-- Dropdown kategori -->
+              <select name="kategoriId" class="form-select form-select-sm mb-2">
+                <option value="">Semua Kategori</option>
+                <?php
+                $kategoriRes = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY nama_kategori ASC");
+                while ($kat = mysqli_fetch_assoc($kategoriRes)) {
+                  echo '<option value="' . $kat['kategoriId'] . '">' . htmlspecialchars($kat['nama_kategori']) . '</option>';
+                }
+                ?>
+              </select>
+
+              <!-- Dropdown subkategori -->
+              <select name="subkategoriId" class="form-select form-select-sm">
+                <option value="">Semua Subkategori</option>
+                <?php
+                $subRes = mysqli_query($koneksi, "SELECT * FROM subkategori ORDER BY nama_subkategori ASC");
+                while ($sub = mysqli_fetch_assoc($subRes)) {
+                  echo '<option value="' . $sub['id_subkategori'] . '">' . htmlspecialchars($sub['nama_subkategori']) . '</option>';
+                }
+                ?>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tombol Search -->
+          <button type="submit" class="btn btn-sm btn-primary">Search</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
   <main>
 
     <div class="slider-container position-relative overflow-hidden" style="position: relative; max-width: 100%;">
@@ -124,7 +179,14 @@
       </div>
     </div>
 
+
+    <section id="about" class="container py-5">
+
+      <?php include 'about.html'; ?>
+    </section>
+
   </main>
+
 
 
   <?php include 'footer.html'; ?>

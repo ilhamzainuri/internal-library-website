@@ -1,4 +1,6 @@
 <?php
+include 'db/koneksi.php';
+
 // ambil parameter pencarian dari GET
 $q             = isset($_GET['q']) ? mysqli_real_escape_string($koneksi, $_GET['q']) : '';
 $kategoriId    = isset($_GET['kategoriId']) ? (int) $_GET['kategoriId'] : 0;
@@ -22,7 +24,7 @@ $query = "SELECT
             b.penerbit,
             b.tahun_terbit,
             b.eISBN,
-            b.`jumlah-buku`,
+            b.jumlah_buku,
             b.rakId,
             b.gambar,
             b.sinopsis,
@@ -64,13 +66,19 @@ if (!$result) {
               <?php echo htmlspecialchars($row['nama_kategori']) . ' » ' . htmlspecialchars($row['nama_subkategori']); ?>
             </p>
             <p class="card-text"><small class="text-muted">
-                Jumlah-buku: <?php echo $row['jumlah-buku']; ?>
+                jumlah_buku: <?php echo $row['jumlah_buku']; ?>
               </small></p>
             <p class="card-text"><small class="text-muted">
                 Posisi-buku: <?php echo $rakList[$row['rakId']] ?? 'N/A'; ?>
               </small></p>
           </div>
-          <?php include 'showdetail.php'; ?>
+          <!-- tombol untuk buka detail -->
+          <button class="btn btn-sm btn-primary mt-2 showMoreBtn"
+                  data-id="<?php echo $row['bukuId']; ?>"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailModal">
+            More Info
+          </button>
         </div>
       </div>
     <?php endwhile; ?>
@@ -78,3 +86,42 @@ if (!$result) {
     <p class="text-danger">Tidak ada buku ditemukan.</p>
   <?php endif; ?>
 </div>
+
+<!-- Modal global -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 900px;">
+    <div class="modal-content border-0 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title">Detail Buku</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="detailContent">
+        <!-- konten detail akan dimuat via AJAX -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".showMoreBtn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      let id = this.getAttribute("data-id");
+      // tampilkan spinner loading
+      document.getElementById("detailContent").innerHTML = `
+        <div class="d-flex justify-content-center align-items-center" style="height:200px;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      `;
+      // ambil detail via AJAX
+      fetch("showdetail.php?bukuId=" + id)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("detailContent").innerHTML = html;
+        });
+    });
+  });
+});
+</script>
