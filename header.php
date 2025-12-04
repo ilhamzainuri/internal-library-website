@@ -42,8 +42,6 @@ include './db/koneksi.php'; // pastikan koneksi tersedia
                             <?php if (!isset($_SESSION['username'])): ?>
                                 <a href="auth/login.php" class="btn btn-sm btn-primary w-100">Login</a>
                             <?php else: ?>
-                                <div class="fw-bold mb-2">Hi, <?= htmlspecialchars($_SESSION['username']) ?></div>
-                                <a href="cust-handler/riwayat.php" class="btn btn-sm btn-success w-100 mb-2">My Transactions</a>
                                 <a href="auth/logout.php" class="btn btn-sm btn-danger w-100">Logout</a>
                             <?php endif; ?>
                         </div>
